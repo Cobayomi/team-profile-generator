@@ -1,12 +1,13 @@
-const fs = require('fs')
-const inquirer = require('inquirer')
-const Manager = require('./lib/Manager')
-const Engineer = require('./lib/Engineer')
-const Intern = require('./lib/Intern')
-const generateHTML = require('./src/generateHTML')
+import fs from "fs"
+import inquirer from "inquirer"
+import Manager from '../lib/Manager.js'
+import Engineer from '../lib/Engineer.js'
+import Intern from '../lib/Intern.js'
+import generateHTML from './src/generateHTML.js'
+import chalk from "chalk"
 
 let employees = [];
-//function startPrompt()
+
  {
     inquirer
     .prompt([
@@ -39,7 +40,7 @@ let employees = [];
       });
     }
     
-    // starts second prompt
+  
     function secondPrompt() {
       inquirer
         .prompt({
@@ -60,7 +61,7 @@ let employees = [];
         });
     }
     
-    // prompts for intern info
+  
     function internPrompt() {
       inquirer
       .prompt([
@@ -93,7 +94,7 @@ let employees = [];
         });
       }
   
-  // prompts for engineer info
+
   function engineerPrompt() {
     inquirer
       .prompt([
@@ -126,7 +127,6 @@ let employees = [];
         });
   }
   
-  // writes generated html page
   function writePage() {
     const pageHTML = generateHTML(employeeArr);
     fs.writeFile("./dist/index.html", pageHTML, (err) => {
