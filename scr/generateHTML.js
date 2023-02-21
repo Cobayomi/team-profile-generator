@@ -40,7 +40,7 @@ function renderCards(employeeArr) {
       </head>
       <body>
           <header>
-              <h1>${employeeArr[0].getName()}'s Web Development Team</h1>
+              <h1>${employeeArr[0].getName()} Web Development Team</h1>
           </header>
           <main class="row justify-content-center">
               ${renderCards(employeeArr)}
