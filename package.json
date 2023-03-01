@@ -1,6 +1,7 @@
 {
   "name": "team-generator",
   "version": "1.0.0",
+  "type": "module",
   "description": "To generate a webpage that displays my team's basic info",
   "main": "index.js",
   "directories": {
