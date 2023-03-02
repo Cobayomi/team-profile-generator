@@ -1,138 +1,246 @@
-import inquirer from "inquirer"
-import Manager from './lib/Manager.js'
-import Engineer from './lib/Engineer.js'
-import Intern from './lib/Intern.js'
-import generateHTML from './scr/generateHTML.js'
-import chalk from "chalk"
-import fs from "fs"
+const inquirer = require("inquirer");
+const fs = require("fs")
+const generateHTML = require('./scr/generateHTML.js')
 
-let employees = [];
+const Engineer = require('./lib/Engineer.js')
+const Intern = ('./lib/Intern.js')
+const Manager = require('./lib/Manager.js');
+const { validateHeaderName } = require("http");
 
-function startPrompt(){
-  inquirer
-    .prompt([
-      {
-        type: "text",
-        message: "Enter team manager's name.",
-        name: "name",
-      },
-      {
-        type: "text",
-        message: "Enter team manager's ID number.",
-        name: "id",
-      },
-      {
-        type: "input",
-        message: "Enter team manager's email address.",
-        name: "email",
-      },
-      {
-        type: "text",
-        message: "Enter team manager's office number.",
-        name: "office",
-      },
-    ])
+const teamArr = [];
 
-    .then(({ name, id, email, office }) => {
-      let employee = new Manager(name, id, email, office);
-      employeeArr.push(employee);
-      secondPrompt();
-    });
+const addManager = () => {
+  return (
+    inquirer
+      .prompt([
+        {
+          name: "name",
+          type: "input",
+          message: "What is Manager's name?",
+          validate: (name) => {
+            if (name) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "managerId",
+          type: "input",
+          message: "What is the manager's ID number?",
+          validate: (Id) => {
+            if (Id) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "managerEmail",
+          type: "input",
+          message: "What is the manager's email address?",
+          validate: (email) => {
+            if (email) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "officeNumber",
+          type: "text",
+          message: "What is the manager's office number?",
+          validate: (office) => {
+            if (office) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+      ])
+      .then(answers) => {
+  const manager = new Manager(
+    answers.name,
+    answers.id,
+    answers.id,
+    answers.email,
+    answers.officeNumber,
+  );
+  teamArr.push(manager);
+  aadEmployee();
 }
 
+const addEngineer = () => {
+  return (
+    inquirer
+      .prompt([
+        {
+          name: "name",
+          type: "input",
+          message: "What is the Enigneer's name?",
+          validate: (name) => {
+            if (name) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "id",
+          type: "input",
+          message: "What is your Enigineer's ID number?",
+          vaildate: (id) => {
+            if (id) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "email",
+          type: "input",
+          message: "What is your Enigneer's email?",
+          vaildate: (email) => {
+            if (email) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+        {
+          name: "Username",
+          type: "input",
+          message: "What is your Enigneer's Github username",
+          vaildate: (userName) => {
+            if (userName) {
+              return true;
+            } else {
+              return false;
+            }
+          },
+        },
+      ])
+      .then((answers) => {
+  const enigineer = new Engineer(
+    answers.name,
+    answers.id,
+    answers.email,
+    answers.userName,
+  );
+  teamArr.push(engineer);
+  addEmplpoyee();
 
-function secondPrompt() {
-  inquirer
-    .prompt({
-      type: "list",
-      message: "Add more team members",
-      choices: ["Engineer", "Intern", "Finish"],
-      name: "emp",
-    })
+  const addIntern = () => {
+    return (
+      inquirer
+        .prompt([
+          {
+            name: "name",
+            type: "input",
+            message: "What is your Intern's name?",
+            validate: (name) => {
+              if (name) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+          },
+          {
+            name: "id",
+            type: "input",
+            message: "What is your Intern's Id number?",
+            validate: (id) => {
+              if (id) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+          },
+          {
+            name: "email",
+            type: "input",
+            message: "What is your Intern's email?",
+            validate: (email) => {
+              if (email) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+          },
+          {
+            name: "school",
+            type: "input",
+            message: "What is your Intern's school name?",
+            vaildate: (school) => {
+              if (school) {
+                return true;
+              } else {
+                return false;
+              }
+            },
+          },
+        ])
+        .then((answers)) => {
+          const intern = new Intern(
 
-    .then(({ emp }) => {
-      if (emp === "Engineer") {
-        engineerPrompt();
-      } else if (emp === "Intern") {
-        internPrompt();
-      } else {
-        writePage();
-      }
-    });
-}
+          answers.name
+        answers.id,
+      answers.email,)
+      answers.school
+    };
+    teamArr.push(intern);
+    addEmployee();
+  })
+   );
+};
 
+const addEmployee = () => {
+  return (
+    inquirer
+      .prompt([
+        {
+          name: "employee",
+          type: "list",
+          message:
+          "Confirm the Employee to insert or type done.",
+        choices: ["Engineer", "Intern", "I am done with my team."],
+        },
+      ])
+      .then((chose) => {
+        switch (chosen.employee) {
+          case "Engineer":
+            addEngineer();
+            break;
+          case "Intern":
+            addIntern();
+            break;
+          default:
+            startHtml();
+        }
+      })
+  );
+};
 
-function internPrompt() {
-  inquirer
-    .prompt([
-      {
-        type: "text",
-        message: "Enter intern's name.",
-        name: "name",
-      },
-      {
-        type: "text",
-        message: "Enter intern's ID number.",
-        name: "id",
-      },
-      {
-        type: "text",
-        message: "Enter intern's email.",
-        name: "email",
-      },
-      {
-        type: "text",
-        message: "Enter intern's school.",
-        name: "school",
-      },
-    ])
-
-    .then(({ name, id, email, school }) => {
-      let employee = new Intern(name, id, email, school);
-      employeeArr.push(employee);
-      secondPrompt();
-    });
-}
-
-
-function engineerPrompt() {
-  inquirer
-    .prompt([
-      {
-        type: "text",
-        message: "Enter engineer's name.",
-        name: "name",
-      },
-      {
-        type: "text",
-        message: "Enter engineer's ID number.",
-        name: "id",
-      },
-      {
-        type: "text",
-        message: "Enter engineer's email",
-        name: "email",
-      },
-      {
-        type: "text",
-        message: "Enter engineer's Github username.",
-        name: "github",
-      },
-    ])
-
-    .then(({ name, id, email, github }) => {
-      let employee = new Engineer(name, id, email, github);
-      employeeArr.push(employee);
-      secondPrompt();
-    });
-}
-
-
-function writePage() {
-  const pageHTML = generateHTML(employeeArr);
-  fs.writeFile("./dist/index.html", pageHTML, (err) => {
+function startHtml(){
+  const dom = generateHTML(teamArr);
+  fs.writeFile("index.html", dom, function (err) {
     if (err) throw err;
+    console.log("good job");
   });
 }
 
-managerPrompt();
+function init() {
+  addManager();
+}
+
+init();
