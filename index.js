@@ -1,10 +1,10 @@
-const inquirer = require("inquirer");
-const fs = require("fs")
-const generateHTML = require('./scr/generateHTML.js')
+import inquirer from "inquirer";
+import fs from "fs";
+import generateHTML from'./scr/generateHTML.js';
 
-const Engineer = require('./lib/Engineer.js')
-const Intern = ('./lib/Intern.js')
-const Manager = require('./lib/Manager.js');
+import Engineer from './lib/Engineer.js';
+import Intern from'./lib/Intern.js';
+import Manager from './lib/Manager.js';
 const { validateHeaderName } = require("http");
 
 const teamArr = [];
@@ -62,17 +62,19 @@ const addManager = () => {
           },
         },
       ])
-      .then(answers) => {
-  const manager = new Manager(
-    answers.name,
-    answers.id,
-    answers.id,
-    answers.email,
-    answers.officeNumber,
-  );
-  teamArr.push(manager);
-  aadEmployee();
-}
+      .then((answers) => {
+        const manager = new Manager(
+          answers.name,
+          answers.id,
+          answers.id,
+          answers.email,
+          answers.officeNumber,
+        );
+        teamArr.push(manager);
+        aadEmployee();
+      })
+  )
+};
 
 const addEngineer = () => {
   return (
@@ -128,81 +130,81 @@ const addEngineer = () => {
         },
       ])
       .then((answers) => {
-  const enigineer = new Engineer(
-    answers.name,
-    answers.id,
-    answers.email,
-    answers.userName,
-  );
-  teamArr.push(engineer);
-  addEmplpoyee();
+        const enigineer = new Engineer(
+          answers.name,
+          answers.id,
+          answers.email,
+          answers.userName,
+        );
+        teamArr.push(engineer);
+        addEmplpoyee();
 
-  const addIntern = () => {
-    return (
-      inquirer
-        .prompt([
-          {
-            name: "name",
-            type: "input",
-            message: "What is your Intern's name?",
-            validate: (name) => {
-              if (name) {
-                return true;
-              } else {
-                return false;
-              }
-            },
-          },
-          {
-            name: "id",
-            type: "input",
-            message: "What is your Intern's Id number?",
-            validate: (id) => {
-              if (id) {
-                return true;
-              } else {
-                return false;
-              }
-            },
-          },
-          {
-            name: "email",
-            type: "input",
-            message: "What is your Intern's email?",
-            validate: (email) => {
-              if (email) {
-                return true;
-              } else {
-                return false;
-              }
-            },
-          },
-          {
-            name: "school",
-            type: "input",
-            message: "What is your Intern's school name?",
-            vaildate: (school) => {
-              if (school) {
-                return true;
-              } else {
-                return false;
-              }
-            },
-          },
-        ])
-        .then((answers)) => {
-          const intern = new Intern(
+        const addIntern = () => {
+          return (
+            inquirer
+              .prompt([
+                {
+                  name: "name",
+                  type: "input",
+                  message: "What is your Intern's name?",
+                  validate: (name) => {
+                    if (name) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                },
+                {
+                  name: "id",
+                  type: "input",
+                  message: "What is your Intern's Id number?",
+                  validate: (id) => {
+                    if (id) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                },
+                {
+                  name: "email",
+                  type: "input",
+                  message: "What is your Intern's email?",
+                  validate: (email) => {
+                    if (email) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                },
+                {
+                  name: "school",
+                  type: "input",
+                  message: "What is your Intern's school name?",
+                  vaildate: (school) => {
+                    if (school) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                },
+              ])
+              .then((answers) => {
+                const intern = new Intern(
 
-          answers.name
-        answers.id,
-      answers.email,)
-      answers.school
-    };
-    teamArr.push(intern);
-    addEmployee();
-  })
-   );
-};
+                  answers.name
+                    ("answers").id,
+                  answers.email,)
+                answers.school
+              })
+              ("teamArr").push(intern),
+          addEmployee()
+      )}
+      })
+)};
 
 const addEmployee = () => {
   return (
@@ -212,8 +214,8 @@ const addEmployee = () => {
           name: "employee",
           type: "list",
           message:
-          "Confirm the Employee to insert or type done.",
-        choices: ["Engineer", "Intern", "I am done with my team."],
+            "Confirm the Employee to insert or type done.",
+          choices: ["Engineer", "Intern", "I am done with my team."],
         },
       ])
       .then((chose) => {
@@ -231,7 +233,7 @@ const addEmployee = () => {
   );
 };
 
-function startHtml(){
+function startHtml() {
   const dom = generateHTML(teamArr);
   fs.writeFile("index.html", dom, function (err) {
     if (err) throw err;
